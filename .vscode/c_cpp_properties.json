@@ -1,0 +1,108 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/include",
+                "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/src",
+                "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/lib/MCP23X17_Button",
+                "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/libdeps/seeed_xiao/AsyncTimer/src",
+                "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/libdeps/seeed_xiao/Keyboard/src",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/HID",
+                "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/libdeps/seeed_xiao/Adafruit MCP23017 Arduino Library/src",
+                "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/libdeps/seeed_xiao/Adafruit BusIO",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/SPI",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Adafruit_ZeroDMA",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Adafruit_ZeroDMA/utility",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Wire",
+                "/home/pascal/.platformio/packages/framework-cmsis/CMSIS/Core/Include",
+                "/home/pascal/.platformio/packages/framework-cmsis-atmel/CMSIS/Device/ATMEL",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/cores/arduino",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/cores/arduino/TinyUSB",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/cores/arduino/TinyUSB/Adafruit_TinyUSB_ArduinoCore",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/cores/arduino/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src",
+                "/home/pascal/.platformio/packages/framework-cmsis/CMSIS/DSP/Include",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/variants/XIAO_m0",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/EnergySaving/src",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/FlashStorage/src",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/I2S/src",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/LoRaWan",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Seeed_Arduino_FreeRTOS/src",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Seeed_Arduino_LCD",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/SoftwareSerial",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/TimerTC3",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/TimerTCC0",
+                "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/USBHost/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/include",
+                    "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/src",
+                    "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/lib/MCP23X17_Button",
+                    "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/libdeps/seeed_xiao/AsyncTimer/src",
+                    "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/libdeps/seeed_xiao/Keyboard/src",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/HID",
+                    "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/libdeps/seeed_xiao/Adafruit MCP23017 Arduino Library/src",
+                    "/home/pascal/data/.Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/libdeps/seeed_xiao/Adafruit BusIO",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/SPI",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Adafruit_ZeroDMA",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Adafruit_ZeroDMA/utility",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Wire",
+                    "/home/pascal/.platformio/packages/framework-cmsis/CMSIS/Core/Include",
+                    "/home/pascal/.platformio/packages/framework-cmsis-atmel/CMSIS/Device/ATMEL",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/cores/arduino",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/cores/arduino/TinyUSB",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/cores/arduino/TinyUSB/Adafruit_TinyUSB_ArduinoCore",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/cores/arduino/TinyUSB/Adafruit_TinyUSB_ArduinoCore/tinyusb/src",
+                    "/home/pascal/.platformio/packages/framework-cmsis/CMSIS/DSP/Include",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/variants/XIAO_m0",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/EnergySaving/src",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/FlashStorage/src",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/I2S/src",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/LoRaWan",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Seeed_Arduino_FreeRTOS/src",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/Seeed_Arduino_LCD",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/SoftwareSerial",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/TimerTC3",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/TimerTCC0",
+                    "/home/pascal/.platformio/packages/framework-arduino-samd-seeed/libraries/USBHost/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=50204",
+                "ARDUINO_SAMD_ZERO",
+                "__SAMD21__",
+                "__SAMD21G18A__",
+                "ARM_MATH_CM0PLUS",
+                "SEEED_XIAO_M0",
+                "ARDUINO=10805",
+                "F_CPU=48000000L",
+                "USBCON",
+                "USB_VID=0x2886",
+                "USB_PID=0x802F",
+                "USB_PRODUCT=\"Seeeduino XIAO\"",
+                "USB_MANUFACTURER=\"Seeed\"",
+                "ARDUINO_ARCH_SAMD",
+                "USB_CONFIG_POWER=100",
+                ""
+            ],
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "compilerPath": "/home/pascal/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-gcc",
+            "compilerArgs": [
+                "-mcpu=cortex-m0plus",
+                "-mthumb",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
