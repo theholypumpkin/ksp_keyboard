@@ -333,7 +333,7 @@ void holdButtonsIsPressed(std::map<uint8_t, MCP23X17_Button> &map){
     if(button.isPressed()){
       Keyboard.press(key);
     }
-    else if(button.wasReleased(){
+    else if(button.wasReleased()){
       Keyboard.release(key);
     } 
   }
