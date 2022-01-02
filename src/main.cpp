@@ -3,6 +3,7 @@
 #include <MCP23X17_Button.h>
 #include <MCP23X17_ToggleButton.h>
 #include <AsyncTimer.h>
+#include <ArxContainer.h>
 #include <math.h>
 /*==================================================================================================
  * Rocket/Plane Control Defintions directly connected to the MCU
@@ -75,7 +76,7 @@
 Adafruit_MCP23X17 sr1;
 Adafruit_MCP23X17 sr2;
 /*__________________________________________________________________________________________________
- * Buttons
+ * Push Buttons
  */
 MCP23X17_Button 
   abortActionGroupButtonSR2(sr2, ABORT_AG_PIN), 
@@ -91,29 +92,31 @@ MCP23X17_Button
   actionGroup10ButtonSR1(sr1, AG_10_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
+  stageButtonSR1(sr1, STAGE_PIN),
+
+  /*__________________________________________________________________________________________________
+ * Hold Buttons
+ */
   invertSASHoldButtonSR2(sr2, INVERT_SAS_HOLD_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  breakHoldbuttonSR2(sr2, BREAK_HOLD_PIN),
+  breakHoldButtonSR2(sr2, BREAK_HOLD_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  wButtonSR2(sr2, W_PITCH_PIN),
-  aButtonSR2(sr2, A_YAW_PIN),
-  sButtonSR2(sr2, S_PITCH_PIN),
-  dButtonSR2(sr2, D_YAW_PIN),
-  qButtonSR2(sr2, Q_ROLL_PIN),
-  eButtonSR2(sr2, E_ROLL_PIN),
+  wHoldButtonSR2(sr2, W_PITCH_PIN),
+  aHoldButtonSR2(sr2, A_YAW_PIN),
+  sHoldButtonSR2(sr2, S_PITCH_PIN),
+  dHoldButtonSR2(sr2, D_YAW_PIN),
+  qHoldButtonSR2(sr2, Q_ROLL_PIN),
+  eHoldButtonSR2(sr2, E_ROLL_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  stageButtonSR1(sr1, STAGE_PIN),
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  RCSTranslateForwardButtonSR1(sr1, RCS_FWD_PIN),
+  RCSTranslateForwardHoldButtonSR1(sr1, RCS_FWD_PIN),
   RCSTranslateBackwardButtonSR1(sr1, RCS_BWD_PIN),
-  RCSTranslateDownButtonSR1(sr1, RCS_DWD_PIN),
-  RCSTranslateUpButtonSR1(sr1, RCS_UPD_PIN),
-  RCSTranslateLeftButtonSR1(sr1, RCS_LWD_PIN),
-  RCSTranslateRightButtonSR1(sr1, RCS_RWD_PIN);
+  RCSTranslateDownHoldButtonSR1(sr1, RCS_DWD_PIN),
+  RCSTranslateUpHoldButtonSR1(sr1, RCS_UPD_PIN),
+  RCSTranslateLeftHoldButtonSR1(sr1, RCS_LWD_PIN),
+  RCSTranslateRightHoldButtonSR1(sr1, RCS_RWD_PIN);
 
 /*__________________________________________________________________________________________________
  * Toggle Buttons
@@ -188,9 +191,66 @@ double m = 0.0;
 const double B = 358.0, RANGE = 11.0, MULTIPLYER = 2.0;
 
 /*__________________________________________________________________________________________________
- * Variables wher each bit repesents if the pin on the shift register is high or low
+ * Variables where each bit repesents if the pin on the shift register is high or low
  */
 uint16_t sr1_all_pins = 0, sr2_all_pins = 0;
+
+/*__________________________________________________________________________________________________
+ * Creating some maps to minimize the code
+ */
+  std::map<uint8_t, MCP23X17_Button> pushButtonMapSR1 {
+    { '6', actionGroup6ButtonSR1 },
+    { '7', actionGroup7ButtonSR1 },
+    { '8', actionGroup8ButtonSR1 },
+    { '9', actionGroup9ButtonSR1 },
+    { '0', actionGroup10ButtonSR1},
+    {' ', stageButtonSR1} //BUG this could not work as intended to be send a space key
+  };
+
+  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
+  std::map<uint8_t, MCP23X17_Button> pushButtonMapSR2 {
+    {KEY_BACKSPACE, abortActionGroupButtonSR2 },
+    { '1', actionGroup1ButtonSR2 },
+    { '2', actionGroup2ButtonSR2 },
+    { '3', actionGroup3ButtonSR2 },
+    { '4', actionGroup4ButtonSR2 },
+    { '5', actionGroup5ButtonSR2 }
+  };
+  
+  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
+  std::map<uint8_t, MCP23X17_Button> holdButtonMapSR1 {
+    {'h', RCSTranslateForwardHoldButtonSR1},
+    {'n', RCSTranslateBackwardButtonSR1},
+    {'i', RCSTranslateDownHoldButtonSR1},
+    {'k', RCSTranslateUpHoldButtonSR1},
+    {'j', RCSTranslateLeftHoldButtonSR1},
+    {'l', RCSTranslateRightHoldButtonSR1}
+  };
+
+  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
+  std::map<uint8_t, MCP23X17_Button> holdButtonMapSR2 {
+    {'f', invertSASHoldButtonSR2},
+    {'b', breakHoldButtonSR2},
+    {'w', wHoldButtonSR2},
+    {'a', aHoldButtonSR2},
+    {'s', sHoldButtonSR2},
+    {'d', dHoldButtonSR2},
+    {'q', qHoldButtonSR2},
+    {'e', eHoldButtonSR2}
+  };
+
+  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
+  std::map<uint8_t, MCP23X17_ToggleButton> toggleButtonMapSR1 {
+    {'r', RCSToggleButtonSR1},
+    {'u', lightToggleButtonSR1},
+    {'m', mapToggleButtonSR1}
+  };
+
+  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
+  std::map<uint8_t, MCP23X17_ToggleButton> toggleButtonMapSR2 {
+    {'t', SASToggleButtonSR2},
+    {'g', gearToggleButtonSR2}
+  };
 
 /*==================================================================================================
  * Constantly calculate the mean of the analog sticks to remove occiolations
@@ -200,8 +260,7 @@ uint16_t mean(uint16_t* arr){
    * This is still less than 2^16 so we are fine staying within 2 bytes.
    */
   uint16_t mean = 0;
-  for(uint8_t i = 0; i < GBL_AVG_ARR_BND; ++i)
-  {
+  for(uint8_t i = 0; i < GBL_AVG_ARR_BND; ++i){
     mean += arr[i]; // add the i-th value from the list and add it to local variable mean.
   }
   // To avoid a expensive devision (chip has no FPU) we shift the value by 3 to the right
@@ -209,6 +268,90 @@ uint16_t mean(uint16_t* arr){
   return mean >> 3; 
 }
 
+/*==================================================================================================
+ * Two methods doing the same thing. One for Push and Hold buttons the other for Toggle buttons
+ * Is used to initialize the buttons
+ */
+void beginButtons(std::map<uint8_t, MCP23X17_Button> &map){
+  for(auto& b : map){
+    auto button = b.second;
+    button.begin();
+  }
+}
+
+/*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
+void beginToggleButtons(std::map<uint8_t, MCP23X17_ToggleButton> &map){
+  for(auto& b : map){
+    auto button = b.second;
+    button.begin();
+  }
+}
+
+/*==================================================================================================
+ * Two methods doing the same thing. one for Push and Hold buttons the other for Toggle buttons
+ * Is used to read the buttons
+ */
+void readButtons(std::map<uint8_t, MCP23X17_Button> &map, uint16_t &sr_all_pins){
+  for(auto& b : map){
+    auto button = b.second;
+    button.read(sr_all_pins);
+  }
+}
+
+/*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
+void readToggleButtons(std::map<uint8_t, MCP23X17_ToggleButton> &map, uint16_t &sr_all_pins){
+  for(auto& b : map){
+    auto button = b.second;
+    button.read(sr_all_pins);
+  }
+}
+
+/*==================================================================================================
+ * Three methods doing more or lessthe same thing. One for Push, one Hold buttons the one for Toggle
+ * buttons
+ * Is used to read the buttons
+ */
+void pushButtonsWasPressed(std::map<uint8_t, MCP23X17_Button> &map){
+  for (const auto& b : map) {
+    auto key = b.first;
+    auto button = b.second;
+
+    if(button.wasPressed()){
+      Keyboard.press(key);
+      delay(1);
+      Keyboard.release(key);
+    } 
+  }
+}
+
+/*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
+void holdButtonsIsPressed(std::map<uint8_t, MCP23X17_Button> &map){
+  for (const auto& b : map) {
+    auto key = b.first;
+    auto button = b.second;
+
+    if(button.isPressed()){
+      Keyboard.press(key);
+    }
+    else if(button.wasReleased(){
+      Keyboard.release(key);
+    } 
+  }
+}
+
+/*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
+void toggleButtonsChanged(std::map<uint8_t, MCP23X17_ToggleButton> &map){
+  for (const auto& b : map) {
+    auto key = b.first;
+    auto button = b.second;
+
+    if(button.changed()){
+      Keyboard.press(key);
+      delay(1);
+      Keyboard.release(key);
+    } 
+  }
+}
 /*================================================================================================*/
 void setup() {
   Serial.begin(9600); //TODO ONLY FOR DEBUG REMOVE LATER
@@ -235,58 +378,12 @@ void setup() {
   /*________________________________________________________________________________________________
    * Begin all the Buttons //TODO Maybe delay 1 ms between each begin to not overload the spi bus
    */
-  abortActionGroupButtonSR2.begin();
-  actionGroup1ButtonSR2.begin();
-  actionGroup2ButtonSR2.begin();
-  actionGroup3ButtonSR2.begin();
-  actionGroup4ButtonSR2.begin();
-  actionGroup5ButtonSR2.begin();
-  actionGroup6ButtonSR1.begin();
-  actionGroup7ButtonSR1.begin();
-  actionGroup8ButtonSR1.begin();
-  actionGroup9ButtonSR1.begin();
-  actionGroup10ButtonSR1.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  invertSASHoldButtonSR2.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  breakHoldbuttonSR2.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  wButtonSR2.begin();
-  aButtonSR2.begin();
-  sButtonSR2.begin();
-  dButtonSR2.begin();
-  qButtonSR2.begin();
-  eButtonSR2.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  stageButtonSR1.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  RCSTranslateBackwardButtonSR1.begin();
-  RCSTranslateForwardButtonSR1.begin();
-  RCSTranslateLeftButtonSR1.begin();
-  RCSTranslateRightButtonSR1.begin();
-  RCSTranslateUpButtonSR1.begin();
-  RCSTranslateDownButtonSR1.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  RCSToggleButtonSR1.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  SASToggleButtonSR2.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  gearToggleButtonSR2.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  lightToggleButtonSR1.begin();
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  mapToggleButtonSR1.begin();
-  
+  beginButtons(pushButtonMapSR1);
+  beginButtons(pushButtonMapSR2);
+  beginButtons(holdButtonMapSR1);
+  beginButtons(holdButtonMapSR2);
+  beginToggleButtons(toggleButtonMapSR1);
+  beginToggleButtons(toggleButtonMapSR2);
   /*________________________________________________________________________________________________
    * Fill up the avarage Array buffer
    */
@@ -329,265 +426,25 @@ void loop() {
   sr2_all_pins = sr2.readGPIOAB();
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   
-   * and now update the button values using the read regiister
+   * and now update the button values using the read register
    */
-  abortActionGroupButtonSR2.read(sr2_all_pins);
-  actionGroup1ButtonSR2.read(sr2_all_pins);
-  actionGroup2ButtonSR2.read(sr2_all_pins);
-  actionGroup3ButtonSR2.read(sr2_all_pins);
-  actionGroup4ButtonSR2.read(sr2_all_pins);
-  actionGroup5ButtonSR2.read(sr2_all_pins);
-  actionGroup6ButtonSR1.read(sr1_all_pins);
-  actionGroup7ButtonSR1.read(sr1_all_pins);
-  actionGroup8ButtonSR1.read(sr1_all_pins);
-  actionGroup9ButtonSR1.read(sr1_all_pins);
-  actionGroup10ButtonSR1.read(sr1_all_pins);
+  readButtons(pushButtonMapSR1, sr1_all_pins);
+  readButtons(holdButtonMapSR1, sr1_all_pins);
+  readToggleButtons(toggleButtonMapSR1, sr1_all_pins);
 
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  invertSASHoldButtonSR2.read(sr2_all_pins);
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  breakHoldbuttonSR2.read(sr2_all_pins);
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  wButtonSR2.read(sr2_all_pins);
-  aButtonSR2.read(sr2_all_pins);
-  sButtonSR2.read(sr2_all_pins);
-  dButtonSR2.read(sr2_all_pins);
-  qButtonSR2.read(sr2_all_pins);
-  eButtonSR2.read(sr2_all_pins);
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  stageButtonSR1.read(sr1_all_pins);
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  RCSTranslateBackwardButtonSR1.read(sr1_all_pins);
-  RCSTranslateForwardButtonSR1.read(sr1_all_pins);
-  RCSTranslateLeftButtonSR1.read(sr1_all_pins);
-  RCSTranslateRightButtonSR1.read(sr1_all_pins);
-  RCSTranslateUpButtonSR1.read(sr1_all_pins);
-  RCSTranslateDownButtonSR1.read(sr1_all_pins);
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  RCSToggleButtonSR1.read(sr1_all_pins);
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  SASToggleButtonSR2.read(sr2_all_pins);
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  gearToggleButtonSR2.read(sr2_all_pins);
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  lightToggleButtonSR1.read(sr1_all_pins);
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  mapToggleButtonSR1.read(sr1_all_pins);
+  readButtons(pushButtonMapSR2, sr2_all_pins);
+  readButtons(holdButtonMapSR2, sr2_all_pins);
+  readToggleButtons(toggleButtonMapSR2, sr2_all_pins);
   /*________________________________________________________________________________________________
    * Check if each Button was Pressed or not.
    */
-  if(abortActionGroupButtonSR2.wasPressed()){
-    Keyboard.press(KEY_BACKSPACE);
-    delay(1);
-    Keyboard.release(KEY_BACKSPACE);
-  }
 
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup1ButtonSR2.wasPressed()){
-    Keyboard.press('1');
-    delay(1);
-    Keyboard.release('1');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup2ButtonSR2.wasPressed()){
-    Keyboard.press('2');
-    delay(1);
-    Keyboard.release('2');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup3ButtonSR2.wasPressed()){
-    Keyboard.press('3');
-    delay(1);
-    Keyboard.release('3');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup4ButtonSR2.wasPressed()){
-    Keyboard.press('4');
-    delay(1);
-    Keyboard.release('4');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup5ButtonSR2.wasPressed()){
-    Keyboard.press('5');
-    delay(1);
-    Keyboard.release('5');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup6ButtonSR1.wasPressed()){
-    Keyboard.press('6');
-    delay(1);
-    Keyboard.release('6');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup7ButtonSR1.wasPressed()){
-    Keyboard.press('7');
-    delay(1);
-    Keyboard.release('7');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup8ButtonSR1.wasPressed()){
-    Keyboard.press('8');
-    delay(1);
-    Keyboard.release('8');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup9ButtonSR1.wasPressed()){
-    Keyboard.press('9');
-    delay(1);
-    Keyboard.release('9');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(actionGroup10ButtonSR1.wasPressed()){
-    Keyboard.press('0');
-    delay(1);
-    Keyboard.release('0');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(invertSASHoldButtonSR2.isPressed())
-    Keyboard.press('f');
-  else if(invertSASHoldButtonSR2.wasReleased())
-    Keyboard.release('f');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(breakHoldbuttonSR2.isPressed())
-    Keyboard.press('b');
-  else if(breakHoldbuttonSR2.wasReleased())
-    Keyboard.release('b');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(wButtonSR2.isPressed())
-    Keyboard.press('w');
-  else if(wButtonSR2.wasReleased())
-    Keyboard.release('w');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(aButtonSR2.isPressed())
-    Keyboard.press('a');
-  else if(aButtonSR2.wasReleased())
-    Keyboard.release('a');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(sButtonSR2.isPressed())
-    Keyboard.press('s');
-  else if(sButtonSR2.wasReleased())
-    Keyboard.release('s');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(dButtonSR2.isPressed())
-    Keyboard.press('d');
-  else if(dButtonSR2.wasReleased())
-    Keyboard.release('d');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(qButtonSR2.isPressed())
-    Keyboard.press('q');
-  else if(qButtonSR2.wasReleased())
-    Keyboard.release('q');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(eButtonSR2.isPressed())
-    Keyboard.press('e');
-  else if(eButtonSR2.wasReleased())
-    Keyboard.release('e');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(stageButtonSR1.wasPressed()){
-    Keyboard.press(' '); //BUG this might not press a space character
-    delay(1);
-    Keyboard.release(' ');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(RCSTranslateBackwardButtonSR1.isPressed())
-    Keyboard.press('n');
-  else if(RCSTranslateBackwardButtonSR1.wasReleased())
-    Keyboard.release('n');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(RCSTranslateForwardButtonSR1.isPressed())
-    Keyboard.press('h');
-  else if(RCSTranslateForwardButtonSR1.wasReleased())
-    Keyboard.release('h');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(RCSTranslateDownButtonSR1.isPressed())
-    Keyboard.press('i');
-  else if(RCSTranslateDownButtonSR1.wasReleased())
-    Keyboard.release('i');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(RCSTranslateUpButtonSR1.isPressed())
-    Keyboard.press('k');
-  else if(RCSTranslateUpButtonSR1.wasReleased())
-    Keyboard.release('k');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(RCSTranslateLeftButtonSR1.isPressed())
-    Keyboard.press('j');
-  else if(RCSTranslateLeftButtonSR1.wasReleased())
-    Keyboard.release('j');
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(RCSTranslateRightButtonSR1.isPressed())
-    Keyboard.press('l');
-  else if(RCSTranslateBackwardButtonSR1.wasReleased())
-    Keyboard.release('l');
-
-  /*________________________________________________________________________________________________
-   * Check if each Toggle Button was has changed or not.
-   */
-  if(SASToggleButtonSR2.changed()){
-      Keyboard.press('t');
-      delay(1);
-      Keyboard.release('t');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(RCSToggleButtonSR1.changed()){
-      Keyboard.press('r');
-      delay(1);
-      Keyboard.release('r');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(gearToggleButtonSR2.changed()){
-      Keyboard.press('g');
-      delay(1);
-      Keyboard.release('g');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(mapToggleButtonSR1.changed()){
-      Keyboard.press('m');
-      delay(1);
-      Keyboard.release('m');
-  }
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  if(lightToggleButtonSR1.changed()){
-      Keyboard.press('u');
-      delay(1);
-      Keyboard.release('u');
-  }
+  pushButtonsWasPressed(pushButtonMapSR1);
+  pushButtonsWasPressed(pushButtonMapSR2);
+  holdButtonsIsPressed(holdButtonMapSR1);
+  holdButtonsIsPressed(holdButtonMapSR2);
+  toggleButtonsChanged(toggleButtonMapSR1);
+  toggleButtonsChanged(toggleButtonMapSR2);
 
   /*________________________________________________________________________________________________
    * Update all the means by replacing one reading in the array
