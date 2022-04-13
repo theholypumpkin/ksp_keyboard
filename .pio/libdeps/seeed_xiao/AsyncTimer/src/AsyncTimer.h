@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2021 Aasim-A
+  Copyright (c) 2022 Aasim-A
   Respository: https://github.com/Aasim-A/AsyncTimer
 
   Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,6 +38,7 @@ private:
     m_TimerInfo() : active(false) {}
   };
 
+  unsigned short m_generateId();
   unsigned short m_newTimerInfo(void (*callback)(), unsigned long ms,
                                 bool indefinite);
 
@@ -46,6 +47,7 @@ private:
   m_TimerInfo *m_callsArray;
   unsigned short m_availableIndicesLength;
   unsigned short *m_availableIndices;
+  void m_cancelEntry(unsigned short index);
 
 public:
   AsyncTimer(unsigned short arrayLength = 10) {
@@ -60,13 +62,16 @@ public:
     delete[] m_callsArray;
     delete[] m_availableIndices;
   }
-  void setup();
+  [[deprecated("Not needed anymore, will be removed in future versions")]] void
+  setup();
   unsigned short setTimeout(void (*callback)(), unsigned long ms);
   unsigned short setInterval(void (*callback)(), unsigned long ms);
+  unsigned long getRemaining(unsigned short id);
   void changeDelay(unsigned short id, unsigned long ms);
   void delay(unsigned short id, unsigned long ms);
   void reset(unsigned short id);
   void cancel(unsigned short id);
+  void cancelAll(bool includeIntervals = true);
   void handle();
 };
 
