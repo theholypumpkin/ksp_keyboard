@@ -17,12 +17,14 @@ class MCP23X17_Button {
     // invert   true to interpret a low logic level as pressed (default true)
     MCP23X17_Button(Adafruit_MCP23X17& mcp,
                     uint8_t mcp_pin,
+                    uint8_t keyboard_key,
                     uint32_t mcp_dbTime = 25,
                     uint8_t mcp_puEnable = true,
                     uint8_t mcp_invert = true
                    )
       : mcp_register(mcp),
         m_pin(mcp_pin),
+        m_keyboardKey(keyboard_key),
         m_dbTime(mcp_dbTime),
         m_puEnable(mcp_puEnable),
         m_invert(mcp_invert){}
@@ -62,6 +64,8 @@ class MCP23X17_Button {
     // Returns the time in milliseconds (from millis) that the button last
     // changed state.
     uint32_t lastChange();
+
+    uint8_t m_keyboardKey; // the keyboard key to be send via usb when the button is pressed
 
   private:
     Adafruit_MCP23X17& mcp_register;

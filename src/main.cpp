@@ -3,7 +3,6 @@
 #include <MCP23X17_Button.h>
 #include <MCP23X17_ToggleButton.h>
 #include <AsyncTimer.h>
-#include <ArxContainer.h>
 #include <math.h>
 /*==================================================================================================
  * Rocket/Plane Control Defintions directly connected to the MCU
@@ -78,63 +77,62 @@ Adafruit_MCP23X17 sr2;
 /*__________________________________________________________________________________________________
  * Push Buttons
  */
-MCP23X17_Button 
-  abortActionGroupButtonSR2(sr2, ABORT_AG_PIN), 
-  actionGroup1ButtonSR2(sr2, AG_1_PIN),
-  actionGroup2ButtonSR2(sr2, AG_2_PIN),
-  actionGroup3ButtonSR2(sr2, AG_3_PIN),
-  actionGroup4ButtonSR2(sr2, AG_4_PIN),
-  actionGroup5ButtonSR2(sr2, AG_5_PIN),
-  actionGroup6ButtonSR1(sr1, AG_6_PIN),
-  actionGroup7ButtonSR1(sr1, AG_7_PIN),
-  actionGroup8ButtonSR1(sr1, AG_8_PIN),
-  actionGroup9ButtonSR1(sr1, AG_9_PIN),
-  actionGroup10ButtonSR1(sr1, AG_10_PIN),
+
+MCP23X17_Button
+  abortActionGroupButtonSR2(sr2, KEY_BACKSPACE, ABORT_AG_PIN),
+  actionGroup1ButtonSR2(sr2, '1', AG_1_PIN),
+  actionGroup2ButtonSR2(sr2, '2', AG_2_PIN),
+  actionGroup3ButtonSR2(sr2, '3', AG_3_PIN),
+  actionGroup4ButtonSR2(sr2, '4', AG_4_PIN),
+  actionGroup5ButtonSR2(sr2, '5', AG_5_PIN),
+  actionGroup6ButtonSR1(sr1, '6', AG_6_PIN),
+  actionGroup7ButtonSR1(sr1, '7', AG_7_PIN),
+  actionGroup8ButtonSR1(sr1, '8', AG_8_PIN),
+  actionGroup9ButtonSR1(sr1, '9', AG_9_PIN),
+  actionGroup10ButtonSR1(sr1, '0', AG_10_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  stageButtonSR1(sr1, STAGE_PIN),
+  stageButtonSR1(sr1, ' ', STAGE_PIN),
 
-  /*__________________________________________________________________________________________________
- * Hold Buttons
- */
-  invertSASHoldButtonSR2(sr2, INVERT_SAS_HOLD_PIN),
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  breakHoldButtonSR2(sr2, BREAK_HOLD_PIN),
+/*__________________________________________________________________________________________________
+  * Hold Buttons
+  */
+  invertSASHoldButtonSR2(sr2, 'f', INVERT_SAS_HOLD_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  wHoldButtonSR2(sr2, W_PITCH_PIN),
-  aHoldButtonSR2(sr2, A_YAW_PIN),
-  sHoldButtonSR2(sr2, S_PITCH_PIN),
-  dHoldButtonSR2(sr2, D_YAW_PIN),
-  qHoldButtonSR2(sr2, Q_ROLL_PIN),
-  eHoldButtonSR2(sr2, E_ROLL_PIN),
+  breakHoldButtonSR2(sr2, 'b', BREAK_HOLD_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  RCSTranslateForwardHoldButtonSR1(sr1, RCS_FWD_PIN),
-  RCSTranslateBackwardButtonSR1(sr1, RCS_BWD_PIN),
-  RCSTranslateDownHoldButtonSR1(sr1, RCS_DWD_PIN),
-  RCSTranslateUpHoldButtonSR1(sr1, RCS_UPD_PIN),
-  RCSTranslateLeftHoldButtonSR1(sr1, RCS_LWD_PIN),
-  RCSTranslateRightHoldButtonSR1(sr1, RCS_RWD_PIN);
+  wHoldButtonSR2(sr2, 'w', W_PITCH_PIN),
+  aHoldButtonSR2(sr2, 'a', A_YAW_PIN),
+  sHoldButtonSR2(sr2, 's', S_PITCH_PIN),
+  dHoldButtonSR2(sr2, 'd', D_YAW_PIN),
+  qHoldButtonSR2(sr2, 'q', Q_ROLL_PIN),
+  eHoldButtonSR2(sr2, 'e', E_ROLL_PIN),
+
+  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
+  RCSTranslateForwardHoldButtonSR1(sr1, 'h', RCS_FWD_PIN),
+  RCSTranslateBackwardButtonSR1(sr1, 'n', RCS_BWD_PIN),
+  RCSTranslateDownHoldButtonSR1(sr1, 'i', RCS_DWD_PIN),
+  RCSTranslateUpHoldButtonSR1(sr1, 'k', RCS_UPD_PIN),
+  RCSTranslateLeftHoldButtonSR1(sr1, 'j', RCS_LWD_PIN),
+  RCSTranslateRightHoldButtonSR1(sr1, 'l', RCS_RWD_PIN);
 
 /*__________________________________________________________________________________________________
  * Toggle Buttons
  */
 MCP23X17_ToggleButton
-  SASToggleButtonSR2(sr2, SAS_TOGGLE_PIN),
+  gearToggleButtonSR2(sr2, 'g', GEAR_TOGGLE_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  gearToggleButtonSR2(sr2, GEAR_TOGGLE_PIN),
+  RCSToggleButtonSR1(sr1, 'r', RCS_TOGGLE_PIN),
+  SASToggleButtonSR2(sr2, 't', SAS_TOGGLE_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  RCSToggleButtonSR1(sr1, RCS_TOGGLE_PIN),
+  lightToggleButtonSR1(sr1, 'u', LIGHTS_TOGGLE_PIN),
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  lightToggleButtonSR1(sr1, LIGHTS_TOGGLE_PIN),
-
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  mapToggleButtonSR1(sr1, MAP_TOGGLE_PIN);
+  mapToggleButtonSR1(sr1, 'm', MAP_TOGGLE_PIN);
 
 /*__________________________________________________________________________________________________
  * Create out Async Soft timer
@@ -196,61 +194,56 @@ const double B = 358.0, RANGE = 11.0, MULTIPLYER = 2.0;
 uint16_t sr1_all_pins = 0, sr2_all_pins = 0;
 
 /*__________________________________________________________________________________________________
- * Creating some maps to minimize the code
+ * Creating some arrays to minimize the code
  */
-  std::map<uint8_t, MCP23X17_Button> pushButtonMapSR1 {
-    { '6', actionGroup6ButtonSR1 },
-    { '7', actionGroup7ButtonSR1 },
-    { '8', actionGroup8ButtonSR1 },
-    { '9', actionGroup9ButtonSR1 },
-    { '0', actionGroup10ButtonSR1},
-    {' ', stageButtonSR1} //BUG this could not work as intended to be send a space key
-  };
+  MCP23X17_Button *pushButtonMapSR1[6]{
+    &actionGroup6ButtonSR1,
+    &actionGroup7ButtonSR1,
+    &actionGroup8ButtonSR1,
+    &actionGroup9ButtonSR1,
+    &actionGroup10ButtonSR1,
+    &stageButtonSR1
+};
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  std::map<uint8_t, MCP23X17_Button> pushButtonMapSR2 {
-    {KEY_BACKSPACE, abortActionGroupButtonSR2 },
-    { '1', actionGroup1ButtonSR2 },
-    { '2', actionGroup2ButtonSR2 },
-    { '3', actionGroup3ButtonSR2 },
-    { '4', actionGroup4ButtonSR2 },
-    { '5', actionGroup5ButtonSR2 }
-  };
-  
-  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  std::map<uint8_t, MCP23X17_Button> holdButtonMapSR1 {
-    {'h', RCSTranslateForwardHoldButtonSR1},
-    {'n', RCSTranslateBackwardButtonSR1},
-    {'i', RCSTranslateDownHoldButtonSR1},
-    {'k', RCSTranslateUpHoldButtonSR1},
-    {'j', RCSTranslateLeftHoldButtonSR1},
-    {'l', RCSTranslateRightHoldButtonSR1}
-  };
+  MCP23X17_Button *pushButtonMapSR2[6]{
+    &abortActionGroupButtonSR2,
+    &actionGroup1ButtonSR2,
+    &actionGroup2ButtonSR2,
+    &actionGroup3ButtonSR2,
+    &actionGroup4ButtonSR2,
+    &actionGroup5ButtonSR2};
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  std::map<uint8_t, MCP23X17_Button> holdButtonMapSR2 {
-    {'f', invertSASHoldButtonSR2},
-    {'b', breakHoldButtonSR2},
-    {'w', wHoldButtonSR2},
-    {'a', aHoldButtonSR2},
-    {'s', sHoldButtonSR2},
-    {'d', dHoldButtonSR2},
-    {'q', qHoldButtonSR2},
-    {'e', eHoldButtonSR2}
-  };
+  MCP23X17_Button *holdButtonMapSR1[6]{
+    &RCSTranslateForwardHoldButtonSR1,
+    &RCSTranslateBackwardButtonSR1,
+    &RCSTranslateDownHoldButtonSR1,
+    &RCSTranslateUpHoldButtonSR1,
+    &RCSTranslateLeftHoldButtonSR1,
+    &RCSTranslateRightHoldButtonSR1};
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  std::map<uint8_t, MCP23X17_ToggleButton> toggleButtonMapSR1 {
-    {'r', RCSToggleButtonSR1},
-    {'u', lightToggleButtonSR1},
-    {'m', mapToggleButtonSR1}
-  };
+  MCP23X17_Button *holdButtonMapSR2[8]{
+    &invertSASHoldButtonSR2,
+    &breakHoldButtonSR2,
+    &wHoldButtonSR2,
+    &aHoldButtonSR2,
+    &sHoldButtonSR2,
+    &dHoldButtonSR2,
+    &qHoldButtonSR2,
+    &eHoldButtonSR2};
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
-  std::map<uint8_t, MCP23X17_ToggleButton> toggleButtonMapSR2 {
-    {'t', SASToggleButtonSR2},
-    {'g', gearToggleButtonSR2}
-  };
+  MCP23X17_ToggleButton *toggleButtonMapSR1[3]{
+    &RCSToggleButtonSR1,
+    &lightToggleButtonSR1,
+    &mapToggleButtonSR1};
+
+  /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   - */
+  MCP23X17_ToggleButton *toggleButtonMapSR2[2]{
+    &SASToggleButtonSR2,
+    &gearToggleButtonSR2};
 
 /*==================================================================================================
  * Constantly calculate the mean of the analog sticks to remove occiolations
@@ -272,94 +265,82 @@ uint16_t mean(uint16_t* arr){
  * Two methods doing the same thing. One for Push and Hold buttons the other for Toggle buttons
  * Is used to initialize the buttons
  */
-void beginButtons(std::map<uint8_t, MCP23X17_Button> &map){
-  for(auto& b : map){
-    auto button = b.second;
-    button.begin();
-  }
+void beginButtons(MCP23X17_Button *arr[], uint8_t size)
+{
+  for (uint8_t i = 0; i < size; ++i)
+    arr[i]->begin();
 }
 
 /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
-void beginToggleButtons(std::map<uint8_t, MCP23X17_ToggleButton> &map){
-  for(auto& b : map){
-    auto button = b.second;
-    button.begin();
-  }
+void beginToggleButtons(MCP23X17_ToggleButton *arr[], uint8_t size)
+{
+  for (uint8_t i = 0; i < size; ++i)
+    arr[i]->begin();
 }
 
 /*==================================================================================================
  * Two methods doing the same thing. one for Push and Hold buttons the other for Toggle buttons
  * Is used to read the buttons
  */
-void readButtons(std::map<uint8_t, MCP23X17_Button> &map, uint16_t &sr_all_pins){
-  for(auto& b : map){
-    auto button = b.second;
-    button.read(sr_all_pins);
-  }
-}
+void readPushButtons(MCP23X17_Button *arr[], uint8_t size, uint16_t &sr_all_pins)
+{
+  for (uint8_t i = 0; i < size; ++i)
+  {
+    arr[i]->read(sr_all_pins);
 
-/*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
-void readToggleButtons(std::map<uint8_t, MCP23X17_ToggleButton> &map, uint16_t &sr_all_pins){
-  for(auto& b : map){
-    auto button = b.second;
-    button.read(sr_all_pins);
-  }
-}
-
-/*==================================================================================================
- * Three methods doing more or lessthe same thing. One for Push, one Hold buttons the one for Toggle
- * buttons
- * Is used to read the buttons
- */
-void pushButtonsWasPressed(std::map<uint8_t, MCP23X17_Button> &map){
-  for (const auto& b : map) {
-    auto key = b.first;
-    auto button = b.second;
-
-    if(button.wasPressed()){
-      Keyboard.press(key);
+    if (arr[i]->wasPressed())
+    {
+      Serial.print("Pressed button");
+      Serial.println(arr[i]->m_keyboardKey);
+      //Keyboard.press(arr[i]->m_keyboardKey);
       delay(1);
-      Keyboard.release(key);
-    } 
-  }
-}
-
-/*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
-void holdButtonsIsPressed(std::map<uint8_t, MCP23X17_Button> &map){
-  for (const auto& b : map) {
-    auto key = b.first;
-    auto button = b.second;
-
-    if(button.isPressed()){
-      Keyboard.press(key);
+      Keyboard.release(arr[i]->m_keyboardKey);
     }
-    else if(button.wasReleased()){
-      Keyboard.release(key);
-    } 
   }
 }
 
 /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
-void toggleButtonsChanged(std::map<uint8_t, MCP23X17_ToggleButton> &map){
-  for (const auto& b : map) {
-    auto key = b.first;
-    auto button = b.second;
+void readHoldButtons(MCP23X17_Button *arr[], uint8_t size, uint16_t &sr_all_pins)
+{
+  for (int i = 0; i < size; ++i)
+  {
+    arr[i]->read(sr_all_pins);
 
-    if(button.changed()){
-      Keyboard.press(key);
+    if (arr[i]->isPressed())
+    {
+      Serial.print("Hold button");
+      Serial.println(arr[i]->m_keyboardKey);
+      Keyboard.press(arr[i]->m_keyboardKey);
+    }
+    else if (arr[i]->wasReleased())
+    {
+      Keyboard.release(arr[i]->m_keyboardKey);
+    }
+  }
+}
+
+/*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
+void readToggleButtons(MCP23X17_ToggleButton *arr[], uint8_t size, uint16_t &sr_all_pins)
+{
+  for (int i = 0; i < size; ++i)
+  {
+
+    arr[i]->read(sr_all_pins);
+    if (arr[i]->changed())
+    {
+      Serial.print("Toggled button: ");
+      Serial.println(arr[i]->m_keyboardKey);
+      Keyboard.press(arr[i]->m_keyboardKey);
       delay(1);
-      Keyboard.release(key);
-    } 
+      Keyboard.release(arr[i]->m_keyboardKey);
+    }
   }
 }
 /*================================================================================================*/
 void setup() {
   Serial.begin(9600); //TODO ONLY FOR DEBUG REMOVE LATER
-
-  /*________________________________________________________________________________________________
-   *Start the Async Soft Timer
-   */
-  timer.setup();
+  while(!Serial);
+  Serial.println("alive");
   /*________________________________________________________________________________________________
    *Start the Keyboard Library
    */
@@ -378,12 +359,12 @@ void setup() {
   /*________________________________________________________________________________________________
    * Begin all the Buttons //TODO Maybe delay 1 ms between each begin to not overload the spi bus
    */
-  beginButtons(pushButtonMapSR1);
-  beginButtons(pushButtonMapSR2);
-  beginButtons(holdButtonMapSR1);
-  beginButtons(holdButtonMapSR2);
-  beginToggleButtons(toggleButtonMapSR1);
-  beginToggleButtons(toggleButtonMapSR2);
+  beginButtons(pushButtonMapSR1, 6 );
+  beginButtons(pushButtonMapSR2, 6);
+  beginButtons(holdButtonMapSR1, 6);
+  beginButtons(holdButtonMapSR2, 8);
+  beginToggleButtons(toggleButtonMapSR1, 3);
+  beginToggleButtons(toggleButtonMapSR2, 2);
   /*________________________________________________________________________________________________
    * Fill up the avarage Array buffer
    */
@@ -424,27 +405,19 @@ void loop() {
    */
   sr1_all_pins = sr1.readGPIOAB();
   sr2_all_pins = sr2.readGPIOAB();
+  Serial.println(sr1_all_pins, BIN);
+  delay(1000);
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   
    * and now update the button values using the read register
    */
-  readButtons(pushButtonMapSR1, sr1_all_pins);
-  readButtons(holdButtonMapSR1, sr1_all_pins);
-  readToggleButtons(toggleButtonMapSR1, sr1_all_pins);
+  readPushButtons(pushButtonMapSR1, 6, sr1_all_pins);
+  readHoldButtons(holdButtonMapSR1, 6, sr1_all_pins);
+  readToggleButtons(toggleButtonMapSR1, 3, sr1_all_pins);
 
-  readButtons(pushButtonMapSR2, sr2_all_pins);
-  readButtons(holdButtonMapSR2, sr2_all_pins);
-  readToggleButtons(toggleButtonMapSR2, sr2_all_pins);
-  /*________________________________________________________________________________________________
-   * Check if each Button was Pressed or not.
-   */
-
-  pushButtonsWasPressed(pushButtonMapSR1);
-  pushButtonsWasPressed(pushButtonMapSR2);
-  holdButtonsIsPressed(holdButtonMapSR1);
-  holdButtonsIsPressed(holdButtonMapSR2);
-  toggleButtonsChanged(toggleButtonMapSR1);
-  toggleButtonsChanged(toggleButtonMapSR2);
+  readPushButtons(pushButtonMapSR2, 6, sr2_all_pins);
+  readHoldButtons(holdButtonMapSR2, 8, sr2_all_pins);
+  readToggleButtons(toggleButtonMapSR2, 2, sr2_all_pins);
 
   /*________________________________________________________________________________________________
    * Update all the means by replacing one reading in the array

@@ -17,11 +17,13 @@ public:
     // constructor is similar to MCP_Button, but includes the initial state for the toggle.
     MCP23X17_ToggleButton(Adafruit_MCP23X17& mcp,
                     uint8_t mcp_pin,
+                    uint8_t keyboard_key,
                     bool mcp_initialState = false,
                     uint32_t mcp_dbTime = 25,
                     uint8_t mcp_puEnable = true,
                     uint8_t mcp_invert = true)
-        : MCP23X17_Button(mcp, mcp_initialState, mcp_dbTime, mcp_puEnable, mcp_invert), m_toggleState(mcp_initialState) {}
+        : MCP23X17_Button(mcp, mcp_pin, keyboard_key, mcp_dbTime, 
+        mcp_puEnable, mcp_invert), m_toggleState(mcp_initialState) {}
 
     // read the button and return its state.
     // should be called frequently.
