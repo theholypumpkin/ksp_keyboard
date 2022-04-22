@@ -24,19 +24,18 @@ bool MCP23X17_Button::read(uint16_t all_pins)
   uint32_t ms = millis();
   uint16_t bitmap = 1; // HEX: 0x0001 BIN: 0b 0000 0000 0000 0001
   /* shift the mask bit to the right pin position  and than logical AND it with all_pins when it
-   * returns 1 we the button is not pressed so we assign true to pinVal, when it returns 0 we
-   * assign false to pinVal meaning the button is pressed.
-   * This is later inverted by the debouncer i.e True becomes false and false becomes true.
+   * returns 1 we the button is not pressed so we assign false to pinVal, when it returns 0 we
+   * assign true to pinVal meaning the button is pressed.
    * After some debouncing the values is assigned to m_state wich we can read with isPressed();
    */
   bool pinVal = (all_pins & bitmap << m_pin); 
-  if (m_invert) // Default = true
-    pinVal = !pinVal; // Here we invert the boolean.
+  if (m_invert)
+    pinVal = !pinVal;
   if (ms - m_lastChange < m_dbTime)
     m_changed = false;
   else
   {
-    m_lastState = m_state; //Even if m_state is 1, last state stays because the object instace is not saved inside the map. i.e the object gets reset every time.
+    m_lastState = m_state;
     m_state = pinVal;
     m_changed = (m_state != m_lastState);
     if (m_changed)

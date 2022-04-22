@@ -34,7 +34,7 @@ Go to libraries and type [AsyncTimer](https://platformio.org/lib/show/11569/Asyn
 
 
 # Getting Started
-Simply include the library into your sketch and make one instance of `AsyncTimer` ~~and add the setup function to `void setup()`~~ and the handler to `void loop()` and then start using it!
+Simply include the library into your sketch and make one instance of `AsyncTimer` and add the setup function to `void setup()` and the handler to `void loop()` and then start using it!
 
 
 #### Example:
@@ -43,6 +43,11 @@ Simply include the library into your sketch and make one instance of `AsyncTimer
 #include <AsyncTimer.h>
 
 AsyncTimer t;
+
+void setup()
+{
+  t.setup();
+}
 
 void loop()
 {
@@ -61,8 +66,6 @@ AsyncTimer t(22);
 # API
 
 ## setTimeout(callbackFunction, delayInMs)
-
-Creates a new timeout.
 
 `setTimeout` takes two arguments, the first one is the function to call after waiting, the second one is the time in milliseconds to wait before executing the function. It returns an `unsigned short` id of the timeout. If the `timeout` creation was unseccussfull, it returns `0`.
 It will run only once unless canceled.
@@ -96,8 +99,6 @@ t.setTimeout(functionToCall, 2000);
 
 ## setInterval(callbackFunction, delayInMs)
 
-Creates a new interval.
-
 `setInterval` takes the same parameters as `setTimeout` and returns an `unsigned short` id of the interval, unlike `setTimeout`, it will keep executing the code forever unless canceled. If the `interval` creation was unseccussfull, it returns `0`.
 
 #### Example:
@@ -125,25 +126,6 @@ void functionToCall()
 
 t.setInterval(functionToCall, 2000);
 // "Hello world!" will be printed to the Serial every 2 seconds
-```
-
-## getRemaining(intervalOrTimeoutId)
-
-Gets the number of milliseconds remaining in a timer. Returns `0` if the timer is not found.
-
-`getRemaining` takes one argument, the `id` returned from `setTimeout` or `setInterval` function, returns `unsigned long`.
-
-#### Example:
-
-```c++
-AsyncTimer t;
-
-unsigned short timeoutId = t.setTimeout([]() {
-  Serial.println("Hello world!");
-}, 3000);
-
-// Get the remaining ms on the timer
-unsigned long remaining = t.getRemaining(timeoutId);
 ```
 
 ## changeDelay(intervalOrTimeoutId, delayInMs)
@@ -251,56 +233,6 @@ unsigned short timeoutId = t.setTimeout([]() {
 t.cancel(timeoutId);
 ```
 
-## cancelAll(includeIntervals = true)
-
-Cancels the execution of a all timeouts and intervals or just timeouts.
-
-`cancelAll` takes one optional argument, if you intend to only cancel timeouts, then call the function with `false`, otherwise it clears both timeouts and intervals be default, returns `void`.
-
-#### Example:
-
-- Cancelling all timeouts and intervals:
-
-```c++
-AsyncTimer t;
-
-t.setInterval([]() {
-  Serial.println("foo");
-}, 2000);
-
-t.setTimeout([]() {
-  Serial.println("bar");
-}, 7000);
-
-t.setTimeout([]() {
-  Serial.println("baz");
-}, 7000);
-
-// After this call, nothing will be running inside AsyncTimer
-t.cancelAll();
-```
-
-- Only cancelling timeouts:
-
-```c++
-AsyncTimer t;
-
-t.setInterval([]() {
-  Serial.println("foo");
-}, 2000);
-
-t.setTimeout([]() {
-  Serial.println("bar");
-}, 7000);
-
-t.setTimeout([]() {
-  Serial.println("baz");
-}, 7000);
-
-// After this call, only intervals will be running inside AsyncTimer
-t.cancelAll(false);
-```
-
 # Limitations
 - Capturing lambda functions do not work.
 
@@ -318,4 +250,4 @@ This library is licensed under [MIT](https://github.com/Aasim-A/AsyncTimer/blob/
 
 # Copyright
 
-Copyright 2022 - Aasim-A
+Copyright 2021 - Aasim-A
