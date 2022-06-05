@@ -10,7 +10,7 @@
 
 # Installing
 
-## Aduino IDE:
+## Arduino IDE:
 
 #### Library Manager:
 
@@ -64,7 +64,7 @@ AsyncTimer t(22);
 
 Creates a new timeout.
 
-`setTimeout` takes two arguments, the first one is the function to call after waiting, the second one is the time in milliseconds to wait before executing the function. It returns an `unsigned short` id of the timeout. If the `timeout` creation was unseccussfull, it returns `0`.
+`setTimeout` takes two arguments, the first one is the function to call after waiting, the second one is the time in milliseconds to wait before executing the function. It returns an `unsigned short` id of the timeout. If the `timeout` creation was unsuccessful, it returns `0`.
 It will run only once unless canceled.
 
 #### Example:
@@ -98,7 +98,7 @@ t.setTimeout(functionToCall, 2000);
 
 Creates a new interval.
 
-`setInterval` takes the same parameters as `setTimeout` and returns an `unsigned short` id of the interval, unlike `setTimeout`, it will keep executing the code forever unless canceled. If the `interval` creation was unseccussfull, it returns `0`.
+`setInterval` takes the same parameters as `setTimeout` and returns an `unsigned short` id of the interval, unlike `setTimeout`, it will keep executing the code forever unless canceled. If the `interval` creation was unsuccessful, it returns `0`.
 
 #### Example:
 
@@ -162,7 +162,7 @@ unsigned short intervalId = t.setInterval([]() {
   Serial.println("Hello world!");
 }, 2000);
 
-t.setTimeout([]() {
+t.setTimeout([=]() {
   t.changeDelay(intervalId, 3500);
   // Now the interval runs every 3500ms instead of the old 2000ms
 }, 7000);
@@ -184,7 +184,7 @@ unsigned short intervalId = t.setInterval([]() {
   Serial.println("Hello world!");
 }, 2000);
 
-t.setTimeout([]() {
+t.setTimeout([=]() {
   t.delay(intervalId, 3500);
   // Now the interval will be delayed by an extra 3500ms,
   // afterwords, it will continue executing normally.
@@ -207,7 +207,7 @@ unsigned short intervalId = t.setInterval([]() {
   Serial.println("Hello world!");
 }, 2000);
 
-t.setTimeout([]() {
+t.setTimeout([=]() {
   t.reset(intervalId);
   // Now the interval will be reset, this means that it will
   // execute exactly 2000ms after the reset function call.
@@ -232,7 +232,7 @@ unsigned short intervalId = t.setInterval([]() {
 }, 2000);
 
 // Cancel the interval after 7 seconds:
-t.setTimeout([]() {
+t.setTimeout([=]() {
   t.cancel(intervalId);
 }, 7000);
 ```
@@ -300,9 +300,6 @@ t.setTimeout([]() {
 // After this call, only intervals will be running inside AsyncTimer
 t.cancelAll(false);
 ```
-
-# Limitations
-- Capturing lambda functions do not work.
 
 # Examples
 
