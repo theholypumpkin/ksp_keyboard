@@ -7,11 +7,11 @@
 /*==================================================================================================
  * Rocket/Plane Control Defintions directly connected to the MCU
  */
-#define W_S_ADC_PIN A1 // Pitch
-#define A_D_ADC_PIN A2 // Yaw
-#define Q_E_ADC_PIN A3 // Roll
-#define UNUSED_ADC_PLACEHOLDER_PIN A4 // Maybe fwd bwd andere RCS Modus
-#define THROTTLE_UP_DOWN_ADC_PIN A5
+#define W_S_ADC_PIN A0 // Pitch
+#define A_D_ADC_PIN A1 // Yaw
+#define Q_E_ADC_PIN A2 // Roll
+#define UNUSED_ADC_PLACEHOLDER_PIN A3 // Maybe fwd bwd andere RCS Modus
+#define THROTTLE_UP_DOWN_ADC_PIN A4
 /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -
  * array bound for global moving avarge loop
  */
@@ -294,7 +294,7 @@ void readPushButtons(MCP23X17_Button *arr[], uint8_t size, uint16_t &sr_all_pins
       Serial.println(arr[i]->m_keyboardKey);
       //Keyboard.press(arr[i]->m_keyboardKey);
       delay(1);
-      Keyboard.release(arr[i]->m_keyboardKey);
+      //Keyboard.release(arr[i]->m_keyboardKey);
     }
   }
 }
@@ -308,13 +308,13 @@ void readHoldButtons(MCP23X17_Button *arr[], uint8_t size, uint16_t &sr_all_pins
 
     if (arr[i]->isPressed())
     {
-      Serial.print("Hold button");
-      Serial.println(arr[i]->m_keyboardKey);
-      Keyboard.press(arr[i]->m_keyboardKey);
+      //Serial.print("Hold button");
+      //Serial.println(arr[i]->m_keyboardKey);
+      //Keyboard.press(arr[i]->m_keyboardKey);
     }
     else if (arr[i]->wasReleased())
     {
-      Keyboard.release(arr[i]->m_keyboardKey);
+      //Keyboard.release(arr[i]->m_keyboardKey);
     }
   }
 }
@@ -328,19 +328,19 @@ void readToggleButtons(MCP23X17_ToggleButton *arr[], uint8_t size, uint16_t &sr_
     arr[i]->read(sr_all_pins);
     if (arr[i]->changed())
     {
-      Serial.print("Toggled button: ");
-      Serial.println(arr[i]->m_keyboardKey);
-      Keyboard.press(arr[i]->m_keyboardKey);
+      //Serial.print("Toggled button: ");
+      //Serial.println(arr[i]->m_keyboardKey);
+      //Keyboard.press(arr[i]->m_keyboardKey);
       delay(1);
-      Keyboard.release(arr[i]->m_keyboardKey);
+      //Keyboard.release(arr[i]->m_keyboardKey);
     }
   }
 }
 /*================================================================================================*/
 void setup() {
-  Serial.begin(9600); //TODO ONLY FOR DEBUG REMOVE LATER
-  while(!Serial);
-  Serial.println("alive");
+  //Serial.begin(9600); //TODO ONLY FOR DEBUG REMOVE LATER
+  //while(!Serial);
+  //Serial.println("alive");
   /*________________________________________________________________________________________________
    *Start the Keyboard Library
    */
@@ -349,11 +349,11 @@ void setup() {
    * Begin booth Shiftregisters
    */
   if (!sr1.begin_SPI(SR_1_CS_PIN)) {
-    Serial.println("Error.");
+    //Serial.println("Error.");
     while (1);
   }
   if (!sr2.begin_SPI(SR_2_CS_PIN)) {
-    Serial.println("Error.");
+    //Serial.println("Error.");
     while (1);
   }
   /*________________________________________________________________________________________________
@@ -405,7 +405,7 @@ void loop() {
    */
   sr1_all_pins = sr1.readGPIOAB();
   sr2_all_pins = sr2.readGPIOAB();
-  Serial.println(sr1_all_pins, BIN);
+  //Serial.println(sr1_all_pins, BIN);
   delay(1000);
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   
@@ -444,9 +444,9 @@ void loop() {
 
     a_interval_id =  timer.setInterval([]() // lambada function
     {
-      Keyboard.press('a');
+      //Keyboard.press('a');
       delay(1);
-      Keyboard.release('a');
+      //Keyboard.release('a');
       if((a_d_mean > a_d_old_mean + 10) || (a_d_mean < a_d_old_mean - 10))
         {
           a_blocked = false; // Unblock the a-key
@@ -464,9 +464,9 @@ void loop() {
 
     d_interval_id =  timer.setInterval([]() // lambada function
     {
-      Keyboard.press('d');
+      //Keyboard.press('d');
       delay(1);
-      Keyboard.release('d');
+      //Keyboard.release('d');
       if((a_d_mean > a_d_old_mean + 10) || (a_d_mean < a_d_old_mean - 10))
         {
           d_blocked = false; // Unblock the a-key
@@ -484,9 +484,9 @@ void loop() {
 
     s_interval_id =  timer.setInterval([]() // lambada function
     {
-      Keyboard.press('d');
+      //Keyboard.press('d');
       delay(1);
-      Keyboard.release('d');
+      //Keyboard.release('d');
       if((w_s_mean > w_s_old_mean + 10) || (w_s_mean < w_s_old_mean - 10))
         {
           s_blocked = false; // Unblock the a-key
@@ -504,9 +504,9 @@ void loop() {
 
     w_interval_id =  timer.setInterval([]() // lambada function
     {
-      Keyboard.press('w');
+      //Keyboard.press('w');
       delay(1);
-      Keyboard.release('w');
+      //Keyboard.release('w');
       if((w_s_mean > w_s_old_mean + 10) || (w_s_mean < w_s_old_mean - 10))
         {
           w_blocked = false; // Unblock the a-key
@@ -524,9 +524,9 @@ void loop() {
     
     q_interval_id =  timer.setInterval([]() // lambada function
     {
-      Keyboard.press('d');
+      //Keyboard.press('d');
       delay(1);
-      Keyboard.release('d');
+      //Keyboard.release('d');
       if((q_e_mean > q_e_old_mean + 10) || (q_e_mean < q_e_old_mean - 10))
         {
           q_blocked = false; // Unblock the a-key
@@ -544,9 +544,9 @@ void loop() {
 
     e_interval_id =  timer.setInterval([]() // lambada function
     {
-      Keyboard.press('w');
+      //Keyboard.press('w');
       delay(1);
-      Keyboard.release('w');
+      //Keyboard.release('w');
       if((q_e_mean > q_e_old_mean + 10) || (q_e_mean < q_e_old_mean - 10))
         {
           e_blocked = false; // Unblock the a-key
@@ -566,11 +566,11 @@ void loop() {
     th_timeout = th_mean - th_old_mean; 
     th_old_mean = th_mean; // set the old mean to the current mean
     
-    Keyboard.press(KEY_LEFT_SHIFT);
+    //Keyboard.press(KEY_LEFT_SHIFT);
     timer.setTimeout([]()
     {
       th_blocked = false;
-      Keyboard.release(KEY_LEFT_SHIFT);
+      //Keyboard.release(KEY_LEFT_SHIFT);
     }, th_timeout); // Always 5 MS
   }
   
@@ -581,11 +581,11 @@ void loop() {
     th_timeout = th_mean - th_old_mean;
     th_old_mean = th_mean;
 
-    Keyboard.press(KEY_LEFT_CTRL);
+    //Keyboard.press(KEY_LEFT_CTRL);
     timer.setTimeout([]()
     {
       th_blocked = false;
-      Keyboard.release(KEY_LEFT_CTRL);
+      //Keyboard.release(KEY_LEFT_CTRL);
     }, th_timeout); // Always 5 MS
   }
   

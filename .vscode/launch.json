@@ -12,22 +12,22 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "/home/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/seeed_xiao/firmware.elf",
-            "projectEnvName": "seeed_xiao",
+            "executable": "/home/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/debug/firmware.elf",
+            "projectEnvName": "debug",
             "toolchainBinDir": "/home/pascal/.platformio/packages/toolchain-gccarmnoneeabi/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "svdPath": "/home/pascal/.platformio/platforms/atmelsam/misc/svd/ATSAMD21G18A.svd",
             "preLaunchTask": {
                 "type": "PlatformIO",
-                "task": "Pre-Debug"
+                "task": "Pre-Debug (debug)"
             }
         },
         {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "/home/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/seeed_xiao/firmware.elf",
-            "projectEnvName": "seeed_xiao",
+            "executable": "/home/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/debug/firmware.elf",
+            "projectEnvName": "debug",
             "toolchainBinDir": "/home/pascal/.platformio/packages/toolchain-gccarmnoneeabi/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "svdPath": "/home/pascal/.platformio/platforms/atmelsam/misc/svd/ATSAMD21G18A.svd"
@@ -36,8 +36,8 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (without uploading)",
-            "executable": "/home/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/seeed_xiao/firmware.elf",
-            "projectEnvName": "seeed_xiao",
+            "executable": "/home/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/debug/firmware.elf",
+            "projectEnvName": "debug",
             "toolchainBinDir": "/home/pascal/.platformio/packages/toolchain-gccarmnoneeabi/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "svdPath": "/home/pascal/.platformio/platforms/atmelsam/misc/svd/ATSAMD21G18A.svd",
