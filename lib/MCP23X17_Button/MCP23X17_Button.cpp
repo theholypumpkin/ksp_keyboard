@@ -46,6 +46,31 @@ bool MCP23X17_Button::read(uint16_t all_pins)
 }
 
 /*----------------------------------------------------------------------*
+  / returns the state of the button, true if pressed, false if released.  *
+  / does debouncing, captures and maintains times, previous state, etc.   *
+  /-----------------------------------------------------------------------*/
+bool MCP23X17_Button::read()
+{
+  uint32_t ms = millis();
+
+  bool pinVal = mcp_register.digitalRead(m_pin); 
+  if (m_invert)
+    pinVal = !pinVal;
+  if (ms - m_lastChange < m_dbTime)
+    m_changed = false;
+  else
+  {
+    m_lastState = m_state;
+    m_state = pinVal;
+    m_changed = (m_state != m_lastState);
+    if (m_changed)
+      m_lastChange = ms;
+  }
+  m_time = ms;
+  return m_state;
+}
+
+/*----------------------------------------------------------------------*
    isPressed() and isReleased() check the button state when it was last
    read, and return false (0) or true (!=0) accordingly.
    These functions do not cause the button to be read.

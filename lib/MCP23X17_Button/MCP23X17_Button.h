@@ -37,6 +37,11 @@ class MCP23X17_Button {
     // the sketch is responsive to user input.
     bool read(uint16_t all_pins);
 
+    // Returns the current debounced button state, true for pressed,
+    // false for released. Call this function frequently to ensure
+    // the sketch is responsive to user input.
+    bool read();
+
     // Returns true if the button state was pressed at the last call to read().
     // Does not cause the button to be read.
     bool isPressed();

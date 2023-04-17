@@ -305,11 +305,11 @@ void beginToggleButtons(MCP23X17_ToggleButton *arr[], uint8_t size)
  * Two methods doing the same thing. one for Push and Hold buttons the other for Toggle buttons
  * Is used to read the buttons
  */
-void readPushButtons(MCP23X17_Button *arr[], uint8_t size, uint16_t &sr_all_pins)
+void readPushButtons(MCP23X17_Button *arr[], uint8_t size)
 {
   for (uint8_t i = 0; i < size; ++i)
   {
-    arr[i]->read(sr_all_pins);
+    arr[i]->read();
 
     if (arr[i]->wasPressed())
     {
@@ -323,11 +323,11 @@ void readPushButtons(MCP23X17_Button *arr[], uint8_t size, uint16_t &sr_all_pins
 }
 
 /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
-void readHoldButtons(MCP23X17_Button *arr[], uint8_t size, uint16_t &sr_all_pins)
+void readHoldButtons(MCP23X17_Button *arr[], uint8_t size)
 {
   for (int i = 0; i < size; ++i)
   {
-    arr[i]->read(sr_all_pins);
+    arr[i]->read();
 
     if (arr[i]->isPressed())
     {
@@ -343,12 +343,12 @@ void readHoldButtons(MCP23X17_Button *arr[], uint8_t size, uint16_t &sr_all_pins
 }
 
 /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   */
-void readToggleButtons(MCP23X17_ToggleButton *arr[], uint8_t size, uint16_t &sr_all_pins)
+void readToggleButtons(MCP23X17_ToggleButton *arr[], uint8_t size)
 {
   for (int i = 0; i < size; ++i)
   {
 
-    arr[i]->read(sr_all_pins);
+    arr[i]->read();
     if (arr[i]->changed())
     {
       //Serial.print("Toggled button: ");
@@ -426,21 +426,21 @@ void loop() {
   /*________________________________________________________________________________________________
    * Read all pin values from both shiftregisters
    */
-  sr1_all_pins = sr1.readGPIOAB();
-  sr2_all_pins = sr2.readGPIOAB();
+  //sr1_all_pins = sr1.readGPIOAB();
+  //sr2_all_pins = sr2.readGPIOAB();
   //Serial.println(sr1_all_pins, BIN);
-  delay(1000);
+  //delay(1000);
 
   /*-   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   -   
    * and now update the button values using the read register
    */
-  readPushButtons(pushButtonMapSR1, 6, sr1_all_pins);
-  readHoldButtons(holdButtonMapSR1, 6, sr1_all_pins);
-  readToggleButtons(toggleButtonMapSR1, 3, sr1_all_pins);
+  readPushButtons(pushButtonMapSR1, 6);
+  readHoldButtons(holdButtonMapSR1, 6);
+  readToggleButtons(toggleButtonMapSR1, 3);
 
-  readPushButtons(pushButtonMapSR2, 6, sr2_all_pins);
-  readHoldButtons(holdButtonMapSR2, 8, sr2_all_pins);
-  readToggleButtons(toggleButtonMapSR2, 2, sr2_all_pins);
+  readPushButtons(pushButtonMapSR2, 6);
+  readHoldButtons(holdButtonMapSR2, 8);
+  readToggleButtons(toggleButtonMapSR2, 2);
 
   /*________________________________________________________________________________________________
    * Update all the means by replacing one reading in the array

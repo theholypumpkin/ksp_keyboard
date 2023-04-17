@@ -20,6 +20,21 @@ bool MCP23X17_ToggleButton::read(uint16_t all_pins)
     }
     return m_toggleState;
 }
+
+bool MCP23X17_ToggleButton::read()
+{
+    MCP23X17_Button::read();
+    if (wasPressed())
+    {
+        m_toggleState = !m_toggleState;
+        m_changed = true;
+    }
+    else
+    {
+        m_changed = false;
+    }
+    return m_toggleState;
+}
 // has the state changed?
 bool MCP23X17_ToggleButton::changed()
 {

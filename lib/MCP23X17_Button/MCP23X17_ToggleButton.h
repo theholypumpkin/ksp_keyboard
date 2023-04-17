@@ -28,6 +28,7 @@ public:
     // read the button and return its state.
     // should be called frequently.
     bool read(uint16_t all_pins);
+    bool read();
 
     // has the state changed?
     bool changed();
