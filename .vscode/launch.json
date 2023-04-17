@@ -12,35 +12,35 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "/home/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/debug/firmware.elf",
-            "projectEnvName": "debug",
-            "toolchainBinDir": "/home/pascal/.platformio/packages/toolchain-gccarmnoneeabi/bin",
+            "executable": "/Users/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/seeed_xiao/firmware.elf",
+            "projectEnvName": "seeed_xiao",
+            "toolchainBinDir": "/Users/pascal/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin",
             "internalConsoleOptions": "openOnSessionStart",
-            "svdPath": "/home/pascal/.platformio/platforms/atmelsam/misc/svd/ATSAMD21G18A.svd",
+            "svdPath": "/Users/pascal/.platformio/platforms/atmelsam/misc/svd/ATSAMD21G18A.svd",
             "preLaunchTask": {
                 "type": "PlatformIO",
-                "task": "Pre-Debug (debug)"
+                "task": "Pre-Debug"
             }
         },
         {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "/home/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/debug/firmware.elf",
-            "projectEnvName": "debug",
-            "toolchainBinDir": "/home/pascal/.platformio/packages/toolchain-gccarmnoneeabi/bin",
+            "executable": "/Users/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/seeed_xiao/firmware.elf",
+            "projectEnvName": "seeed_xiao",
+            "toolchainBinDir": "/Users/pascal/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin",
             "internalConsoleOptions": "openOnSessionStart",
-            "svdPath": "/home/pascal/.platformio/platforms/atmelsam/misc/svd/ATSAMD21G18A.svd"
+            "svdPath": "/Users/pascal/.platformio/platforms/atmelsam/misc/svd/ATSAMD21G18A.svd"
         },
         {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (without uploading)",
-            "executable": "/home/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/debug/firmware.elf",
-            "projectEnvName": "debug",
-            "toolchainBinDir": "/home/pascal/.platformio/packages/toolchain-gccarmnoneeabi/bin",
+            "executable": "/Users/pascal/Documents/Private Documents/Developer/C++/Personal/Arduino/Projects/KSP_Keyboard/.pio/build/seeed_xiao/firmware.elf",
+            "projectEnvName": "seeed_xiao",
+            "toolchainBinDir": "/Users/pascal/.platformio/packages/toolchain-gccarmnoneeabi@1.70201.0/bin",
             "internalConsoleOptions": "openOnSessionStart",
-            "svdPath": "/home/pascal/.platformio/platforms/atmelsam/misc/svd/ATSAMD21G18A.svd",
+            "svdPath": "/Users/pascal/.platformio/platforms/atmelsam/misc/svd/ATSAMD21G18A.svd",
             "loadMode": "manual"
         }
     ]
